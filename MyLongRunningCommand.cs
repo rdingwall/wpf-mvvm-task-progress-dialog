@@ -4,33 +4,36 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using ProgressDialogEx.ProgressDialog;
 
-public class MyLongRunningCommand : ICommand
+namespace ProgressDialogEx
 {
-    readonly IProgressDialogService dialogService;
-
-    public MyLongRunningCommand(IProgressDialogService dialogService)
+    public class MyLongRunningCommand : ICommand
     {
-        this.dialogService = dialogService;
-    }
+        readonly IProgressDialogService dialogService;
 
-    public void Execute(object parameter)
-    {
-        dialogService.Execute(DoWork, new ProgressDialogOptions { WindowTitle = "Loading files" });
-    }
+        public MyLongRunningCommand(IProgressDialogService dialogService)
+        {
+            this.dialogService = dialogService;
+        }
 
-    void DoWork(CancellationToken cancellationToken, IProgress<string> progress)
-    {
-        Task.Factory.StartNew(() => progress.Report("First"), cancellationToken)
-            .ContinueWith(_ => Thread.Sleep(1000), cancellationToken)
-            .ContinueWith(_ => progress.Report("Second"), cancellationToken)
-            .ContinueWith(_ => Thread.Sleep(1000), cancellationToken)
-            .Wait();
-    }
+        public void Execute(object parameter)
+        {
+            dialogService.Execute(DoWork, new ProgressDialogOptions { WindowTitle = "Loading files" });
+        }
 
-    public bool CanExecute(object parameter)
-    {
-        return true;
-    }
+        void DoWork(CancellationToken cancellationToken, IProgress<string> progress)
+        {
+            Task.Factory.StartNew(() => progress.Report("First"), cancellationToken)
+                .ContinueWith(_ => Thread.Sleep(1000), cancellationToken)
+                .ContinueWith(_ => progress.Report("Second"), cancellationToken)
+                .ContinueWith(_ => Thread.Sleep(1000), cancellationToken)
+                .Wait();
+        }
 
-    public event EventHandler CanExecuteChanged;
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public event EventHandler CanExecuteChanged;
+    }
 }
