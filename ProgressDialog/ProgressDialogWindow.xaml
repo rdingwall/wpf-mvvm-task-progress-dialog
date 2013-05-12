@@ -1,0 +1,52 @@
+﻿<Window x:Class="ProgressDialogEx.ProgressDialog.ProgressDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:progressDialog="clr-namespace:ProgressDialogEx.ProgressDialog"
+        xmlns:ap="clr-namespace:ProgressDialogEx.AttachedProperties"
+        mc:Ignorable="d"
+        Height="140"
+        Width="340"
+        MinHeight="140"
+        MinWidth="340"
+        Title="{Binding WindowTitle}"
+        FontFamily="Segoe UI"
+        ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow"
+        WindowStartupLocation="CenterOwner"
+        d:DataContext="{d:DesignInstance progressDialog:ProgressDialogWindowViewModel}"
+        ap:DialogCloser.DialogResult="{Binding Close}"
+        ap:WindowBehavior.HideCloseButton="True">
+    <DockPanel Margin="10">
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ProgressBar x:Name="ProgressBar"
+                         Grid.Column="0"
+                         IsIndeterminate="True"
+                         Height="22" />
+            <Button x:Name="CancelButton"
+                    Grid.Column="1"
+                    Margin="3,0,0,0"
+                    Width="70"
+                    Height="22"
+                    Content="Cancel"
+                    HorizontalAlignment="Right"
+                    Command="{Binding CancelCommand}"
+                    Visibility="{Binding IsCancellable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
+        <TextBlock x:Name="TextLabel"
+                   Text="{Binding Label}"
+                   TextTrimming="CharacterEllipsis"
+                   DockPanel.Dock="Top" />
+        <TextBlock x:Name="SubTextLabel"
+                   Text="{Binding SubLabel}"
+                   FontStyle="Italic"
+                   Margin="0,5,0,5"
+                   TextWrapping="Wrap"
+                   TextTrimming="CharacterEllipsis" />
+    </DockPanel>
+</Window>

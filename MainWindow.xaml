@@ -1,0 +1,76 @@
+﻿<Window x:Class="ProgressDialogEx.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:progressDialogEx="clr-namespace:ProgressDialogEx"
+        mc:Ignorable="d"
+        Title="ProgressDialog Test"
+        Width="400"
+        Height="300"
+        MinWidth="450"
+        MinHeight="430"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance progressDialogEx:MainWindowViewModel}">
+    <Grid>
+        <StackPanel Margin="20">
+            <Button Content="ProgressDialog Default"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,0"
+                    Click="ShowProgressDialog" />
+            <Button Content="ProgressDialog With Cancel Button"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,0"
+                    Click="ShowProgressDialogWithCancelButton" />
+            <Button Content="ProgressDialog With Cancel Button And Progress Display"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,5"
+                    Click="ShowProgressDialogWithCancelButtonAndProgress" />
+            <Separator/>
+            <Button Content="ProgressDialog with result"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,0"
+                    Click="ShowProgressDialogWithResult" />
+            <Button Content="ProgressDialog with cancel button and result"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,0"
+                    Click="ShowProgressDialogWithResultAndCancelButton" />
+            <Button Content="ProgressDialog with cancel button and progress display and result"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,5"
+                    Click="ShowProgressDialogWithResultAndCancelButtonAndProgress" />
+            <Separator />
+            <Button Content="ProgressDialog with error"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,0"
+                    Click="ShowProgressDialogWithError" />
+            <Button Content="ProgressDialog with cancel button and error"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,0"
+                    Click="ShowProgressDialogWithErrorAndCancelButton" />
+            <Button Content="ProgressDialog with cancel button and progress display and error"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,5"
+                    Click="ShowProgressDialogWithErrorAndCancelButtonAndProgress" />
+        </StackPanel>
+    </Grid>
+</Window>
