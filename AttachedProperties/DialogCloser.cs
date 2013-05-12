@@ -2,7 +2,7 @@
 
 namespace ProgressDialogEx.AttachedProperties
 {
-    // From http://stackoverflow.com/a/11947483/91551
+    // From     
     public static class DialogCloser
     {
         public static readonly DependencyProperty DialogResultProperty =

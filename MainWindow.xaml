@@ -71,6 +71,13 @@
                     Height="26"
                     Margin="5,5,5,5"
                     Click="ShowProgressDialogWithErrorAndCancelButtonAndProgress" />
+            <Separator />
+            <Button Content="ProgressDialog with task composition example"
+                    HorizontalContentAlignment="Left"
+                    Padding="5,0,5,0"
+                    Height="26"
+                    Margin="5,5,5,5"
+                    Command="{Binding MyLongRunningCommand}" />
         </StackPanel>
     </Grid>
 </Window>

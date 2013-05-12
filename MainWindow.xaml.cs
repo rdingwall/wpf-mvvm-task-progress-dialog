@@ -18,7 +18,11 @@ namespace ProgressDialogEx
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
+            MyLongRunningCommand = new MyLongRunningCommand(progressDialog);
         }
+
+        public MyLongRunningCommand MyLongRunningCommand { get; private set; }
 
         // Using non-MVVM code-behind for purposes of example.
 

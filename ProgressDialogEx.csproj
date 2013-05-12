@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProgressDialog\CancelCommand.cs" />
+    <Compile Include="MyLongRunningCommand.cs" />
     <Compile Include="ProgressDialog\ProgressDialogOptions.cs" />
     <Compile Include="ProgressDialog\ProgressDialogService.cs" />
     <Compile Include="AttachedProperties\WindowBehavior.cs" />
