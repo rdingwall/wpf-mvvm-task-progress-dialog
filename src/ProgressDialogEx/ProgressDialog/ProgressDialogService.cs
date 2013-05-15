@@ -62,14 +62,66 @@ namespace ProgressDialogEx.ProgressDialog
                 isCancellable: false);
         }
 
-        public bool TryExecute<T>(Func<CancellationToken, IProgress<string>, T> action, 
+        public bool TryExecute<T>(Func<CancellationToken, IProgress<string>, T> action,
             ProgressDialogOptions options, out T result)
         {
             if (action == null) throw new ArgumentNullException("action");
             return TryExecuteInternal(action, options, out result);
         }
 
-        private void ExecuteInternal(Action<CancellationToken, IProgress<string>> action, 
+        public async Task ExecuteAsync(Func<Task> action, ProgressDialogOptions options)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            await ExecuteAsyncInternal((token, progress) => action(), options);
+        }
+
+        public async Task ExecuteAsync(Func<CancellationToken, Task> action, ProgressDialogOptions options)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            await ExecuteAsyncInternal((token, progress) => action(token), options);
+        }
+
+        public async Task ExecuteAsync(Func<IProgress<string>, Task> action, ProgressDialogOptions options)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            await ExecuteAsyncInternal((token, progress) => action(progress), options,
+                isCancellable: false);
+        }
+
+        public async Task ExecuteAsync(Func<CancellationToken, IProgress<string>, Task> action,
+            ProgressDialogOptions options)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            await ExecuteAsyncInternal(action, options);
+        }
+
+        public async Task<T> ExecuteAsync<T>(Func<Task<T>> action, ProgressDialogOptions options)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            return await ExecuteAsyncInternal((token, progress) => action(), options);
+        }
+
+        public async Task<T> ExecuteAsync<T>(Func<CancellationToken, Task<T>> action, ProgressDialogOptions options)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            return await ExecuteAsyncInternal((token, progress) => action(token), options);
+        }
+
+        public async Task<T> ExecuteAsync<T>(Func<IProgress<string>, Task<T>> action, ProgressDialogOptions options)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            return await ExecuteAsyncInternal((token, progress) => action(progress), options,
+                isCancellable: false);
+        }
+
+        public async Task<T> ExecuteAsync<T>(Func<CancellationToken, IProgress<string>, Task<T>> action,
+            ProgressDialogOptions options)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            return await ExecuteAsyncInternal(action, options);
+        }
+
+        private void ExecuteInternal(Action<CancellationToken, IProgress<string>> action,
             ProgressDialogOptions options, bool isCancellable = true)
         {
             if (action == null) throw new ArgumentNullException("action");
@@ -100,7 +152,7 @@ namespace ProgressDialogEx.ProgressDialog
         }
 
         private bool TryExecuteInternal<T>(
-            Func<CancellationToken, IProgress<string>, T> action, 
+            Func<CancellationToken, IProgress<string>, T> action,
             ProgressDialogOptions options, out T result, bool isCancellable = true)
         {
             if (action == null) throw new ArgumentNullException("action");
@@ -111,7 +163,7 @@ namespace ProgressDialogEx.ProgressDialog
                 CancellationToken cancellationToken = cancellationTokenSource.Token;
 
                 var cancelCommand = isCancellable ? new CancelCommand(cancellationTokenSource) : null;
-                
+
                 var viewModel = new ProgressDialogWindowViewModel(
                     options, cancellationToken, cancelCommand);
 
@@ -142,6 +194,68 @@ namespace ProgressDialogEx.ProgressDialog
 
                 result = default(T);
                 return false;
+            }
+        }
+
+        async private Task<T> ExecuteAsyncInternal<T>(
+            Func<CancellationToken, IProgress<string>, Task<T>> action,
+            ProgressDialogOptions options, bool isCancellable = true)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            if (options == null) throw new ArgumentNullException("options");
+
+            using (var cancellationTokenSource = new CancellationTokenSource())
+            {
+                CancellationToken cancellationToken = cancellationTokenSource.Token;
+
+                var cancelCommand = isCancellable ? new CancelCommand(cancellationTokenSource) : null;
+
+                var viewModel = new ProgressDialogWindowViewModel(
+                    options, cancellationToken, cancelCommand);
+
+                var window = new ProgressDialogWindow
+                {
+                    DataContext = viewModel
+                };
+
+                Task<T> task = action(cancellationToken, viewModel.Progress);
+
+                task.ContinueWith(_ => viewModel.Close = true);
+
+                window.ShowDialog();
+
+                return await task;
+            }
+        }
+
+        async private Task ExecuteAsyncInternal(
+            Func<CancellationToken, IProgress<string>, Task> action,
+            ProgressDialogOptions options, bool isCancellable = true)
+        {
+            if (action == null) throw new ArgumentNullException("action");
+            if (options == null) throw new ArgumentNullException("options");
+
+            using (var cancellationTokenSource = new CancellationTokenSource())
+            {
+                CancellationToken cancellationToken = cancellationTokenSource.Token;
+
+                var cancelCommand = isCancellable ? new CancelCommand(cancellationTokenSource) : null;
+
+                var viewModel = new ProgressDialogWindowViewModel(
+                    options, cancellationToken, cancelCommand);
+
+                var window = new ProgressDialogWindow
+                {
+                    DataContext = viewModel
+                };
+
+                Task task = action(cancellationToken, viewModel.Progress);
+
+                task.ContinueWith(_ => viewModel.Close = true);
+
+                window.ShowDialog();
+
+                await task;
             }
         }
     }
