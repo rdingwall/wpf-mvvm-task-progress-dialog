@@ -9,6 +9,7 @@ This is a quick example WPF application that shows an MVVM-style progress meter 
 * Exception handling back to the original thread.
 * Reporting background progress updates via IProgress&lt;T&gt;.
 * Tasks can either be declared as void, or have a return value.
+* Progress can be reported from multiple tasks chained together.
 * Using an attached property to hide [the close button in the progress dialog's title bar](http://stackoverflow.com/questions/743906/how-to-hide-close-button-in-wpf-window) using Win32 interop.
 * Using an attached property to implement a [close window command using MVVM](http://stackoverflow.com/questions/11945821/implementing-close-window-command-with-mvvm/).
 
