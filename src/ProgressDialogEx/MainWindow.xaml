@@ -72,7 +72,7 @@
                     Margin="5,5,5,5"
                     Click="ShowProgressDialogWithErrorAndCancelButtonAndProgress" />
             <Separator />
-            <Button Content="ProgressDialog with task composition example"
+            <Button Content="ProgressDialog with async task composition example"
                     HorizontalContentAlignment="Left"
                     Padding="5,0,5,0"
                     Height="26"
